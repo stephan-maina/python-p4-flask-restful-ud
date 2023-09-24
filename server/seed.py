@@ -1,24 +1,17 @@
 #!/usr/bin/env python3
 
-from faker import Faker
+from app import db
+from models import TodoItem
 
-from app import app
-from models import db, Newsletter
+if __name__ == '__main__':
+    db.create_all()
 
+    task1 = TodoItem(title='Buy fruits and groceries', completed=False)
+    task2 = TodoItem(title='Finish project and code challenges', completed=False)
+    task3 = TodoItem(title='Go for a run', completed=True)
 
-with app.app_context():
-    
-    fake = Faker()
+    db.session.add(task1)
+    db.session.add(task2)
+    db.session.add(task3)
 
-    Newsletter.query.delete()
-
-    newsletters = []
-    for i in range(50):
-        newsletter = Newsletter(
-            title = fake.text(max_nb_chars=20),
-            body = fake.paragraph(nb_sentences=5),
-        )
-        newsletters.append(newsletter)
-
-    db.session.add_all(newsletters)
     db.session.commit()
