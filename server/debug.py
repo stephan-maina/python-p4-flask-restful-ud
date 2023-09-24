@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 
-from app import app
-from models import db, Newsletter
+from app import app  # Import your Flask app instance
 
 if __name__ == '__main__':
-    
-    with app.app_context():
-        import ipdb; ipdb.set_trace()
+    app.run(debug=True)
