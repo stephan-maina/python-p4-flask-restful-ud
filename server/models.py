@@ -1,16 +1,13 @@
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy_serializer import SerializerMixin
+from app import db
 
-db = SQLAlchemy()
-
-class Newsletter(db.Model, SerializerMixin):
-    __tablename__ = 'newsletters'
-
+class TodoItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String)
-    body = db.Column(db.String)
-    published_at = db.Column(db.DateTime, server_default=db.func.now())
-    edited_at = db.Column(db.DateTime, onupdate=db.func.now())
+    title = db.Column(db.String(128), nullable=False)
+    completed = db.Column(db.Boolean, default=False)
 
-    def __repr__(self):
-        return f'<Newsletter {self.title}, published at {self.published_at}.>'
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'title': self.title,
+            'completed': self.completed
+        }
